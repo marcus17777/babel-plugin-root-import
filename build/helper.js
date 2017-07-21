@@ -27,8 +27,8 @@ var hasRootPathPrefixInString = exports.hasRootPathPrefixInString = function has
       containsRootPathPrefix = true;
     }
 
-    var firstTwoCharactersOfString = importPath.substring(0, rootPathPrefix.length + 1);
-    if (firstTwoCharactersOfString === rootPathPrefix + '/') {
+    var firstCharactersOfString = importPath.substring(0, rootPathPrefix.length + 1);
+    if (firstCharactersOfString === rootPathPrefix + '/') {
       containsRootPathPrefix = true;
     }
   }
@@ -40,11 +40,12 @@ var transformRelativeToRootPath = exports.transformRelativeToRootPath = function
   var sourceFile = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '';
 
   var withoutRootPathPrefix = '';
+
   if (hasRootPathPrefixInString(importPath, rootPathPrefix)) {
     if (importPath.substring(0, 1) === '/') {
       withoutRootPathPrefix = importPath.substring(1, importPath.length);
     } else {
-      withoutRootPathPrefix = importPath.substring(rootPathPrefix.length, importPath.length);
+      withoutRootPathPrefix = importPath.substring(rootPathPrefix.length + 1, importPath.length);
     }
 
     var absolutePath = _path2.default.resolve((rootPathSuffix ? rootPathSuffix : './') + '/' + withoutRootPathPrefix);
