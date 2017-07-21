@@ -11,8 +11,8 @@ export const hasRootPathPrefixInString = (importPath, rootPathPrefix = '~') => {
       containsRootPathPrefix = true;
     }
 
-    const firstTwoCharactersOfString = importPath.substring(0, rootPathPrefix.length + 1);
-    if (firstTwoCharactersOfString === `${rootPathPrefix}/`) {
+    const firstCharactersOfString = importPath.substring(0, rootPathPrefix.length + 1);
+    if (firstCharactersOfString === `${rootPathPrefix}/`) {
       containsRootPathPrefix = true;
     }
   }
@@ -22,11 +22,12 @@ export const hasRootPathPrefixInString = (importPath, rootPathPrefix = '~') => {
 
 export const transformRelativeToRootPath = (importPath, rootPathSuffix, rootPathPrefix, sourceFile = '') => {
   let withoutRootPathPrefix = '';
+
   if (hasRootPathPrefixInString(importPath, rootPathPrefix)) {
     if (importPath.substring(0, 1) === '/') {
       withoutRootPathPrefix = importPath.substring(1, importPath.length);
     } else {
-      withoutRootPathPrefix = importPath.substring(rootPathPrefix.length, importPath.length);
+      withoutRootPathPrefix = importPath.substring(rootPathPrefix.length + 1, importPath.length);
     }
 
     const absolutePath = path.resolve(`${rootPathSuffix ? rootPathSuffix : './'}/${withoutRootPathPrefix}`);
